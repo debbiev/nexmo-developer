@@ -6,7 +6,7 @@ info:
   title: Number Insight API
   version: 1.0.0
   description: >-
-    Nexmo's Number Insight API provides details about the validity, reachability and roaming status of a phone number, as well as giving you details on how to format the number properly in your application. There are three levels of Number Insight API available: Basic, Standard and Advanced. The advanced API is available asynchronously as well as synchronously.
+    Nexmo's Number Insight API delivers real-time intelligence about the validity, reachability and roaming status of a phone number and tells you how to format the number correctly in your application. There are three levels of Number Insight API available: Basic, Standard and Advanced. The advanced API is available asynchronously as well as synchronously.
   contact:
     name: Nexmo.com
     email: devrel@nexmo.com
@@ -34,8 +34,8 @@ paths:
       - $ref: '#/components/parameters/format'
     get:
       operationId: getNumberInsightBasic
-      summary: Synchronously get information about a phone number
-      x-group: number-insight
+      summary: Basic Number Insight
+      # x-group: number-insight
       tags:
         - Request
       parameters:
@@ -56,8 +56,8 @@ paths:
       - $ref: '#/components/parameters/format'
     get:
       operationId: getNumberInsightStandard
-      summary: Synchronously get information about a phone number
-      x-group: number-insight
+      summary: Standard Number Insight
+      # x-group: number-insight
       tags:
         - Request
       parameters:
@@ -79,8 +79,8 @@ paths:
       - $ref: '#/components/parameters/format'
     get:
       operationId: getNumberInsightAdvanced
-      summary: Synchronously get information about a phone number
-      x-group: number-insight
+      summary: Advanced Number Insight (sync)
+      # x-group: number-insight
       tags:
         - Request
       parameters:
@@ -103,8 +103,8 @@ paths:
       - $ref: '#/components/parameters/format'
     get:
       operationId: getNumberInsightAsync
-      summary: Asynchronously get information about a phone number
-      x-group: number-insight
+      summary: Advanced Number Insight (async)
+      # x-group: number-insight
       tags:
         - Request
       parameters:
@@ -225,7 +225,8 @@ components:
           xml:
             name: requestPrice
         status:
-          $ref: '#/components/schemas/niStatus'
+          $ref: '#/components/schemas/niStandardAdvancedStatus'
+
     niResponseXmlBasic:
       type: object
       description: Basic
@@ -294,6 +295,7 @@ components:
               example: Success
               xml:
                 x-text: true # see https://github.com/OAI/OpenAPI-Specification/issues/630
+
     niResponseXmlStandard:
       type: object
       description: 'Standard'
@@ -395,6 +397,7 @@ components:
                 - consumer
                 - unknown
               example: 'consumer'
+
     niResponseXmlAdvanced:
       type: object
       description: 'Advanced'
@@ -544,12 +547,13 @@ components:
                 - unknown
                 - no_warning
               example: 'no_warning'
+
     niResponseJsonBasic:
       type: object
       description: Basic
       properties:
         status:
-          $ref: '#/components/schemas/niStatus'
+          $ref: '#/components/schemas/niBasicStatus'
         status_message:
           type: string
           description: 'The status description of your request.'
@@ -585,12 +589,13 @@ components:
           type: string
           description: 'The numeric prefix for the country that `number` is registered in.'
           example: '44'
+
     niResponseJsonStandard:
       type: object
       description: Standard
       properties:
         status:
-          $ref: '#/components/schemas/niStatus'
+          $ref: '#/components/schemas/niStandardAdvancedStatus'
         status_message:
           type: string
           description: 'The status description of your request.'
@@ -680,12 +685,13 @@ components:
             - consumer
             - unknown
           example: 'consumer'
+
     niResponseJsonAdvanced:
       type: object
       description: Advanced
       properties:
         status:
-          $ref: '#/components/schemas/niStatus'
+          $ref: '#/components/schemas/niStandardAdvancedStatus'
         status_message:
           type: string
           description: 'The status description of your request.'
@@ -833,6 +839,7 @@ components:
         - country_code_iso3
         - country_name
         - country_prefix
+
     niCarrier:
       type: object
       properties:
@@ -868,6 +875,7 @@ components:
           xml:
             attribute: true
           example: 'mobile'
+
     niRoaming:
       type: object
       properties:
@@ -899,6 +907,7 @@ components:
             example: 'Acme Inc'
             xml:
               attribute: true
+
     niIP:
       type: object
       properties:
@@ -929,6 +938,7 @@ components:
           example: 'London'
           xml:
             attribute: true
+
     niCallerIdentity:
       type: object
       properties:
@@ -956,7 +966,28 @@ components:
           type: string
           # @TODO: description: ''
           example: 'unknown'
-    niStatus:
+
+    niBasicStatus:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 3
+        - 4
+        - 5
+        - 9
+      example: 0 
+      description: |
+        Code | Text
+        -- | --
+        0 | Success - request accepted for delivery by Nexmo.
+        1 | Busy - you have made more requests in the last second than are permitted by your Nexmo account. Please retry.
+        3 | Invalid - your request is incomplete and missing some mandatory parameters.
+        4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
+        5 | Internal Error - the format of the recipient address is not valid.
+        9 | Partner quota exceeded - your Nexmo account does not have sufficient credit to process this request.   
+
+    niStandardAdvancedStatus:
       type: integer
       example: 0
       enum:
@@ -980,14 +1011,10 @@ components:
         4 | Invalid credentials - the _api_key_ or _api_secret_ you supplied is either not valid or has been disabled.
         5 | Internal Error - the format of the recipient address is not valid.
         9 | Partner quota exceeded - your Nexmo account does not have sufficient credit to process this request.
-
-        #### Standard and Advanced only
-
-        Code | Text
-        -- | --
         19 | Facility Not Allowed - your request makes use of a facility that is not enabled on your account.
         43, 44, 45 | Live mobile lookup not returned. Not all return parameters are available.
         999 | Request unparseable.
+
   securitySchemes:
     apiKey:
       type: string
@@ -999,13 +1026,13 @@ components:
       name: api_secret
       in: query
       description: 'You can find your API secret in your [account overview](https://dashboard.nexmo.com/account-overview)'
-x-groups:
-  number-insight:
-    name: Number Insight
-    description: The Number Insight object contains information about the request and details of the phone number information has been requested about.
-    order: 1
-    schema:
-      application/json:
-        $ref: '#/components/schemas/niResponseJsonAdvanced'
-      text/xml:
-        $ref: '#/components/schemas/niResponseXmlAdvanced'
+# x-groups:
+#   number-insight:
+#     name: Number Insight
+#     description: The Number Insight object contains information about the request and details of the phone number information has been requested about.
+#     order: 1
+#     # schema:
+#     #   application/json:
+#     #     $ref: '#/components/schemas/niResponseJsonAdvanced'
+#     #   text/xml:
+#     #     $ref: '#/components/schemas/niResponseXmlAdvanced'
