@@ -4,7 +4,7 @@ title: Send a WhatsApp message with failover
 
 # Send a WhatsApp message with failover
 
-In this example you will send a WhatsApp message that fails over to sending an SMS. 
+In this example you will send a WhatsApp message that fails over to sending an SMS.
 
 In the Workflow object, message objects can be placed in any order to suit your use case. Each message object must contain a failover object, except for the last message, as there are no more message objects to failover to.
 
@@ -24,8 +24,7 @@ Key | Description
 ```building_blocks
 source: '_examples/dispatch/send-whatsapp-message-with-failover'
 application:
-  use_existing: |
-    If you do not have an application you can create one in the <a href="https://dashboard.nexmo.com/messages/create-application">Messages and Dispatch tab in the Dashboard</a>. Also make sure you <a href="https://developer.nexmo.com/messages/building-blocks/configure-webhooks">configure your webhooks</a>.
+  type: dispatch
   name: 'Send a WhatsApp message with failover'
 ```
 
