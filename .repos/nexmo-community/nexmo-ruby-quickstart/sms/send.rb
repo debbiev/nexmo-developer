@@ -13,7 +13,7 @@ client = Nexmo::Client.new(
 )
 
 client.sms.send(
-  from: 'Acme Inc',
+  from: FROM_NUMBER,
   to: RECIPIENT_NUMBER,
   text: 'A text message sent using the Nexmo SMS API'
 )
