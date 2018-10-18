@@ -7,7 +7,7 @@ $client = new \Nexmo\Client($basic);
 
 $message = $client->message()->send([
     'to' => TO_NUMBER,
-    'from' => 'Acme Inc',
+    'from' => FROM_NUMBER,
     'text' => 'A text message sent using the Nexmo SMS API'
 ]);
 
