@@ -11,7 +11,7 @@ const nexmo = new Nexmo({
   apiSecret: NEXMO_API_SECRET
 })
 
-const from = 'Acme Inc'
+const from = FROM_NUMBER
 const to = TO_NUMBER
 const text = 'A text message sent using the Nexmo SMS API'
 

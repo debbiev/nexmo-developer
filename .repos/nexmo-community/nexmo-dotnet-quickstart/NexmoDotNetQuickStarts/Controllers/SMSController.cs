@@ -33,7 +33,7 @@ namespace NexmoDotNetQuickStarts.Controllers
 
             var results = client.SMS.Send(request: new SMS.SMSRequest
             {
-                from = "Acme Inc",
+                from = FROM_NUMBER,
                 to = TO_NUMBER,
                 text = "A test SMS sent using the Nexmo SMS API"
             });
