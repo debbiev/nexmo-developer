@@ -44,7 +44,7 @@ public class SendMessage {
         SmsClient client = new NexmoClient(auth).getSmsClient();
 
         TextMessage exampleMessage = new TextMessage(
-            "Acme Inc",
+            FROM_NUMBER,
             TO_NUMBER,
             "A text message sent using the Nexmo SMS API"
         );
