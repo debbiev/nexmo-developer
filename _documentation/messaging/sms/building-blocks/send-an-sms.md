@@ -11,6 +11,7 @@ Sending an SMS message with Nexmo is straightforward. Sign up for an account and
 Key | Description
 -- | --
 `TO_NUMBER` | The number you are sending the SMS to in E.164  format. For example `447700900000`.
+`FROM_NUMBER` | Your Nexmo number, found on Numbers->Your numbers
 `NEXMO_API_KEY` | You can find this in your account overview
 `NEXMO_API_SECRET` | You can find this in your account overview
 
